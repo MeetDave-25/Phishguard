@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ t('meta.feedback.t') }}{% endblock %}
+{% block description %}{{ t('meta.feedback.d') }}{% endblock %}
+{% block page_id %}feedback{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ crumbs_ld|tojson }}</script>{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{ L('/') }}">{{ t('crumb.home') }}</a> <span aria-hidden="true">/</span> <span aria-current="page">{{ t('crumb.review') }}</span></nav>
+<h1>{{ t('fb.h1') }}</h1>
+<p>{{ t('fb.intro', contact_url=L('/contact')) }}</p>
+
+<form class="form" method="post" action="{{ L('/feedback') }}" novalidate>
+  {% include "_form_bits.html" %}
+  {% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+
+  <fieldset class="rating">
+    <legend>{{ t('fb.rating') }}</legend>
+    {% for n in [1, 2, 3, 4, 5] %}
+    <input type="radio" id="r{{ n }}" name="rating" value="{{ n }}" {% if form.rating == n|string %}checked{% endif %} required><label for="r{{ n }}"><span class="sr">{% if n == 1 %}{{ t('fb.star_one') }}{% else %}{{ t('fb.star_n', n=n) }}{% endif %}</span><span aria-hidden="true">{{ n }}</span></label>
+    {% endfor %}
+    <span class="hint">{{ t('fb.hint') }}</span>
+  </fieldset>
+
+  <label for="f-comment">{{ t('fb.comment') }}</label>
+  <textarea id="f-comment" name="comment" rows="5" minlength="10" maxlength="600" required>{{ form.comment }}</textarea>
+
+  <label for="f-name">{{ t('fb.name') }} <span class="opt">{{ t('fb.name_opt') }}</span></label>
+  <input id="f-name" name="name" type="text" maxlength="60" autocomplete="nickname" value="{{ form.name }}">
+
+  <label for="f-email">{{ t('fb.email') }} <span class="opt">{{ t('fb.email_opt') }}</span></label>
+  <input id="f-email" name="email" type="email" maxlength="120" autocomplete="email" value="{{ form.email }}">
+
+  <label class="check"><input type="checkbox" name="publish" value="1" {% if form.publish %}checked{% endif %}> {{ t('fb.publish') }}</label>
+
+  <p class="form-note">{{ t('fb.note', privacy_url=L('/privacy')) }}</p>
+  <button class="btn btn-lg" type="submit">{{ t('fb.send') }}</button>
+</form>
+{% endblock %}

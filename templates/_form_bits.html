@@ -1,0 +1,5 @@
+{# Spam protection fields shared by every form. No cookies, no third-party CAPTCHA. #}
+<div class="hp" aria-hidden="true">
+  <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off" value=""></label>
+</div>
+<input type="hidden" name="t" value="{{ token }}">

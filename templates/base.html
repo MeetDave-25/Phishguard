@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}{{ t('meta.home.title') }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% endblock %}">
+  <meta name="robots" content="{% block robots %}index,follow,max-image-preview:large{% endblock %}">
+  <link rel="canonical" href="{{ site.canonical }}">
+  {% for a in site.alts %}<link rel="alternate" hreflang="{{ a.code }}" href="{{ a.url }}">{% endfor %}
+  {% if site.alts %}<link rel="alternate" hreflang="x-default" href="{{ site.x_default }}">{% endif %}
+  <meta name="author" content="{{ site.owner }}">
+
+  <!-- Open Graph / Twitter share previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:locale" content="{{ site.og_locale }}">
+  {% for a in site.alts %}{% if a.code != lang %}<meta property="og:locale:alternate" content="{{ a.og_locale }}">{% endif %}{% endfor %}
+  <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ site.canonical }}">
+  <meta property="og:image" content="{{ site.og_image }}">
+  <meta property="og:image:secure_url" content="{{ site.og_image }}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ site.og_alt }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ self.og_title() }}">
+  <meta name="twitter:description" content="{{ self.description() }}">
+  <meta name="twitter:image" content="{{ site.og_image }}">
+  <meta name="twitter:image:alt" content="{{ site.og_alt }}">
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#efece4">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0f0d">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PhishGuard">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="icon" href="{{ url_for('static', filename='icon-192.png') }}" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+  {% if site.gsc %}<meta name="google-site-verification" content="{{ site.gsc }}">{% endif %}
+  {% if site.ga_id %}<meta name="pg-ga" content="{{ site.ga_id }}">{% endif %}
+  {% if site.ads_id %}<meta name="pg-ads" content="{{ site.ads_id }}">{% endif %}
+  {% if site.ads_conv %}<meta name="pg-ads-conv" content="{{ site.ads_conv }}">{% endif %}
+
+  <link rel="preload" href="{{ url_for('static', filename='fonts/instrument-serif-latin-400-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <script type="application/ld+json">{{ site.org_ld|tojson }}</script>
+  {% block jsonld %}{% endblock %}
+</head>
+<body data-page="{% block page_id %}page{% endblock %}"{% if conv %} data-conv="1"{% endif %}>
+  <a class="skip" href="#main">{{ t('ui.skip') }}</a>
+
+  <header class="topbar" id="topbar">
+    <nav class="nav" aria-label="{{ ta('aria.main') }}">
+      <a class="brand" href="{{ L('/') }}" aria-label="{{ ta('ui.home_aria') }}">
+        <svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="mk-a" d="M12 2l9 3.5V12c0 5-4 8.5-9 10-5-1.5-9-5-9-10V5.5z"/><path class="mk-b" d="M7.5 12.2l3 3 6-6.4" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        PhishGuard
+      </a>
+      <div class="links" id="links">
+        <a href="{{ L('/#story') }}">{{ t('nav.story') }}</a>
+        <a href="{{ L('/#checker') }}">{{ t('nav.try') }}</a>
+        <a href="{{ L('/#layers') }}">{{ t('nav.how') }}</a>
+        <a href="{{ L('/#accuracy') }}">{{ t('nav.accuracy') }}</a>
+        <a href="{{ L('/about') }}">{{ t('nav.about') }}</a>
+        <a href="{{ L('/#faq') }}">{{ t('nav.faq') }}</a>
+      </div>
+      <div class="nav-actions">
+        <details class="lang" id="lang">
+          <summary aria-label="{{ ta('ui.language') }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span>{{ cur_lang.native }}</span></summary>
+          <ul>{% for l in langs %}<li><a href="{{ l.url }}" hreflang="{{ l.code }}" lang="{{ l.code }}"{% if l.current %} aria-current="true"{% endif %}>{{ l.native }}</a></li>{% endfor %}</ul>
+        </details>
+        <button id="theme" class="pill-btn" aria-label="{{ ta('ui.theme_aria') }}"><span class="t-light">{{ t('ui.light') }}</span><span class="t-dark">{{ t('ui.dark') }}</span></button>
+        <a class="btn btn-sm" href="{{ L('/#checker') }}">{{ t('nav.check') }}</a>
+        <button id="burger" class="pill-btn burger" aria-label="{{ ta('ui.menu') }}" aria-expanded="false">{{ t('ui.menu') }}</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="{% block main_class %}{% endblock %}">
+    {% if site.english_only and lang != 'en' %}<p class="lang-note" role="note">{{ t('ui.english_only') }} <a href="{{ site.english_url }}" hreflang="en" lang="en">{{ t('ui.read_english') }}</a></p>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    {% block footer_top %}{% endblock %}
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="{{ L('/') }}"><svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path class="mk-a" d="M12 2l9 3.5V12c0 5-4 8.5-9 10-5-1.5-9-5-9-10V5.5z"/><path class="mk-b" d="M7.5 12.2l3 3 6-6.4" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> PhishGuard</a>
+        <p class="foot-note">{{ t('foot.note') }}</p>
+      </div>
+      <nav class="foot-links" aria-label="{{ ta('aria.product') }}">
+        <b>{{ t('foot.product') }}</b>
+        <a href="{{ L('/#checker') }}">{{ t('foot.checker') }}</a>
+        <a href="{{ L('/#layers') }}">{{ t('nav.how') }}</a>
+        <a href="{{ L('/#accuracy') }}">{{ t('foot.accuracy') }}</a>
+        <a href="{{ L('/#faq') }}">{{ t('nav.faq') }}</a>
+      </nav>
+      <nav class="foot-links" aria-label="{{ ta('foot.company') }}">
+        <b>{{ t('foot.company') }}</b>
+        <a href="{{ L('/about') }}">{{ t('foot.about') }}</a>
+        <a href="{{ L('/contact') }}">{{ t('foot.contact') }}</a>
+        <a href="{{ L('/feedback') }}">{{ t('foot.review') }}</a>
+      </nav>
+      <nav class="foot-links" aria-label="{{ ta('foot.legal') }}">
+        <b>{{ t('foot.legal') }}</b>
+        <a href="{{ L('/privacy') }}">{{ t('foot.privacy') }}</a>
+        <a href="{{ L('/terms') }}">{{ t('foot.terms') }}</a>
+        <a href="{{ L('/cookies') }}">{{ t('foot.cookies') }}</a>
+        {% if site.analytics %}<button type="button" class="link-btn" data-consent-open>{{ t('foot.cookie_settings') }}</button>{% endif %}
+      </nav>
+      <nav class="foot-links" aria-label="{{ ta('foot.help') }}">
+        <b>{{ t('foot.help') }}</b>
+        <a href="https://cybercrime.gov.in" target="_blank" rel="noopener">cybercrime.gov.in</a>
+        <a href="tel:1930">{{ t('foot.call') }}</a>
+        <a href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">reportfraud.ftc.gov (US)</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <p>{{ t('foot.copy', year=site.year, owner=site.owner) }}</p>
+      <a class="by" href="{{ site.owner_url }}" target="_blank" rel="noopener">meetdave.tech <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <!-- ===== mobile app chrome (shown on phones only; see style.css) ===== -->
+  <nav class="tabbar" id="tabbar" aria-label="{{ ta('aria.app') }}">
+    <a href="{{ L('/') }}" data-tab="home"{% if site.path == '/' %} aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/></svg><span>{{ t('tab.home') }}</span></a>
+    <a href="{{ L('/#checker') }}" data-tab="check" class="tab-main">
+      <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span>{{ t('tab.check') }}</span></a>
+    <a href="{{ L('/about') }}" data-tab="about"{% if site.path == '/about' %} aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span>{{ t('tab.about') }}</span></a>
+    <button type="button" id="more-btn" aria-haspopup="dialog" aria-controls="sheet" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h.01M12 12h.01M19 12h.01"/></svg><span>{{ t('tab.more') }}</span></button>
+  </nav>
+  <div class="sheet-bg" id="sheet-bg"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="{{ ta('tab.more') }}" aria-hidden="true">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-langs"><b>{{ t('ui.language') }}</b><div>{% for l in langs %}<a href="{{ l.url }}" hreflang="{{ l.code }}" lang="{{ l.code }}"{% if l.current %} aria-current="true"{% endif %}>{{ l.native }}</a>{% endfor %}</div></div>
+    <a href="{{ L('/#accuracy') }}">{{ t('foot.accuracy') }}</a>
+    <a href="{{ L('/#faq') }}">{{ t('sheet.faq') }}</a>
+    <a href="{{ L('/feedback') }}">{{ t('foot.review') }}</a>
+    <a href="{{ L('/contact') }}">{{ t('sheet.contact') }}</a>
+    <a href="{{ L('/privacy') }}">{{ t('foot.privacy') }}</a>
+    <a href="{{ L('/terms') }}">{{ t('foot.terms') }}</a>
+    <a href="{{ L('/cookies') }}">{{ t('foot.cookies') }}</a>
+    {% if site.analytics %}<button type="button" class="row-btn" data-consent-open>{{ t('foot.cookie_settings') }}</button>{% endif %}
+    <button type="button" class="row-btn" id="theme-sheet">{{ t('sheet.theme') }}</button>
+    <button type="button" class="row-btn" id="install-btn" hidden>{{ t('sheet.install') }}</button>
+    <p class="sheet-ios" id="ios-hint" hidden>{{ t('sheet.ios') }}</p>
+    <a class="sheet-by" href="{{ site.owner_url }}" target="_blank" rel="noopener">{{ t('sheet.by', owner=site.owner) }} · meetdave.tech ↗</a>
+  </div>
+
+  <script src="{{ url_for('static', filename='site.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

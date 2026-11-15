@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}About PhishGuard – Who Built It &amp; How It Works{% endblock %}
+{% block description %}PhishGuard is a free scam checker built by Meet G. Dave. Learn how it decides, how accurate it really is, what it cannot do, and how your data is handled.{% endblock %}
+{% block page_id %}about{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ crumbs_ld|tojson }}</script>{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{ L('/') }}">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">About</span></nav>
+<h1>About PhishGuard</h1>
+
+<h2>What it is</h2>
+<p>PhishGuard is a free tool that tells you how risky a link, a message or a screenshot looks, and shows you every reason, so you can learn to spot scams yourself. Paste something suspicious on the <a href="{{ L('/#checker') }}">checker</a> and you get a 0–100 risk score in a few seconds.</p>
+
+<h2>Who built it</h2>
+<p>PhishGuard is built and run by <b>{{ site.owner }}</b> (<a href="{{ site.owner_url }}" target="_blank" rel="noopener">meetdave.tech</a>), as an independent project to help people avoid online fraud, which is rising fast. It is not a bank, a government service or a security company, and it is not affiliated with any brand it names. Questions or problems? <a href="{{ L('/contact') }}">Contact us</a>.</p>
+
+<h2>How it decides</h2>
+<p>Four layers work together (see the animated version in <a href="{{ L('/#layers') }}">How it works</a>):</p>
+<ul>
+  <li><b>Rules</b> for lookalike brand domains, scam phrases (OTP requests, fake KYC, “digital arrest”), risky endings and hidden redirects.</li>
+  <li><b>A trained model</b> that rates a web address against thousands of real phishing sites.</li>
+  <li><b>Live blocklists</b>: the OpenPhish feed and Cloudflare’s security DNS.</li>
+  <li><b>Link inspection</b>: the server follows redirects and reads the destination page, without running it, looking for fake login forms.</li>
+</ul>
+
+<h2 id="accuracy">How accurate it is</h2>
+<p>We measured it on thousands of real phishing sites and popular safe sites, keeping every domain used for testing out of training. At the “Be careful” level it flagged about <b>73%</b> of real phishing, with about <b>6.5%</b> false alarms on popular sites. When it says “Likely a scam”, it was right about <b>98%</b> of the time, but that level caught fewer scams (about 48%).</p>
+<p>That means <b>roughly 1 in 4 phishing links still slips through</b>. Brand-new scam sites, hacked legitimate sites and pages that hide from scanners are the hardest. We also found and fixed a serious bias in our first version, and we say so in the full evaluation report that ships with the project. The measurements describe the past; scammers change tactics weekly.</p>
+
+<h2>What it cannot do</h2>
+<ul>
+  <li>It cannot guarantee that a link is safe. “Looks safe” only means no strong warning signs were found.</li>
+  <li>It cannot see inside your private messages or apps; it only analyzes what you paste.</li>
+  <li>It does not recover money. If you have already paid or shared a code, call your bank at once and report it (in India: <b>1930</b> or cybercrime.gov.in).</li>
+</ul>
+
+<h2>Money and independence</h2>
+<p>PhishGuard is free. It does not show advertising and it does not sell data. If that ever changes, this page and the <a href="{{ L('/privacy') }}">privacy policy</a> will say so first.</p>
+
+<h2>Your data</h2>
+<p>Nothing you paste is stored. Read exactly what is processed and why in the <a href="{{ L('/privacy') }}">privacy policy</a> and the <a href="{{ L('/cookies') }}">cookie policy</a>.</p>
+
+<h2>Tell us how it went</h2>
+<p>Real feedback makes the tool better and helps others decide whether to trust it. <a href="{{ L('/feedback') }}">Leave a review</a> or <a href="{{ L('/contact') }}">report a problem</a>, such as a scam it missed or a safe site it wrongly flagged.</p>
+{% endblock %}

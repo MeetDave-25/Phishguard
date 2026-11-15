@@ -4,8 +4,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY analyzer.py app.py ai.py inspector.py reputation.py mlmodel.py ./
+COPY analyzer.py app.py ai.py inspector.py reputation.py mlmodel.py sitepages.py i18n.py qrscan.py textrules_i18n.py ./
 COPY templates templates
+COPY translations translations
 COPY static static
 COPY models models
 RUN useradd -m app && chown -R app /app

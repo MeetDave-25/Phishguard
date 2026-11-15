@@ -6,3 +6,4 @@ joblib
 rapidocr-onnxruntime>=1.3   # free offline screenshot OCR
 python-whois>=0.9           # optional fallback for domain age
 # anthropic>=0.40           # optional, only if you ever get an API key (AI second opinion)
+# qrcode>=7              # only needed to run tests/test_multilang.py (generates test QR images)

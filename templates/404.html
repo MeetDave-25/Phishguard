@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found – PhishGuard{% endblock %}
+{% block description %}That page does not exist. Check a link or message for scams, or read how PhishGuard works.{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+{% block page_id %}404{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block content %}
+<p class="kicker">Error 404</p>
+<h1>That page doesn’t exist.</h1>
+<p>The link may be old or mistyped. (If a link in a message sent you here, be careful: that is how scams work.) Try one of these instead:</p>
+<ul class="next">
+  <li><a href="{{ L('/#checker') }}">Check a link or message for scams</a></li>
+  <li><a href="{{ L('/about') }}">About PhishGuard</a></li>
+  <li><a href="{{ L('/privacy') }}">Privacy policy</a></li>
+  <li><a href="{{ L('/contact') }}">Contact us</a></li>
+</ul>
+<p><a class="btn" href="{{ L('/') }}">Go to the home page</a></p>
+{% endblock %}

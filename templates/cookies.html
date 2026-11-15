@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Cookie Policy – PhishGuard{% endblock %}
+{% block description %}Exactly what PhishGuard stores in your browser. No cookies are set unless you accept analytics, and you can change your choice at any time.{% endblock %}
+{% block page_id %}cookies{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ crumbs_ld|tojson }}</script>{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{ L('/') }}">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Cookie policy</span></nav>
+<h1>Cookie policy</h1>
+<p class="updated">Last updated {{ site.updated }}</p>
+<p>This page lists everything PhishGuard stores in your browser. It is short on purpose.</p>
+
+<h2>Always (needed for the site to work, no consent required)</h2>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Name</th><th>Where</th><th>Purpose</th><th>Lasts</th></tr></thead>
+  <tbody>
+    <tr><td><code>theme</code></td><td>Local storage</td><td>Remembers whether you chose light or dark mode.</td><td>Until you clear site data</td></tr>
+    <tr><td>Cache storage <code>pg-static-*</code></td><td>Service worker</td><td>Copies of this site’s own files (styles, scripts, fonts, icons) so the app opens fast and can show an offline page. It never contains anything you paste, and no pages or API results are cached.</td><td>Until the site updates or you clear site data</td></tr>
+    {% if site.analytics %}<tr><td><code>pg_consent</code></td><td>Local storage</td><td>Remembers your cookie choice (accept or decline) so we don’t keep asking.</td><td>Until you clear site data</td></tr>{% endif %}
+  </tbody>
+</table>
+</div>
+
+<h2>Analytics and advertising</h2>
+{% if site.analytics %}
+<p>These are set <b>only if you click Accept</b> in the cookie banner. If you decline, none of them are created and Google’s scripts are never loaded.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Name</th><th>Provider</th><th>Purpose</th><th>Lasts</th></tr></thead>
+  <tbody>
+    {% if site.ga_id %}<tr><td><code>_ga</code>, <code>_ga_*</code></td><td>Google Analytics</td><td>Tells visits apart so we can count visitors and pages viewed.</td><td>Up to 2 years</td></tr>{% endif %}
+    {% if site.ads_id %}<tr><td><code>_gcl_au</code>, <code>_gcl_aw</code></td><td>Google Ads</td><td>Measures whether someone who clicked our ad later contacted us (conversion measurement).</td><td>Up to 90 days</td></tr>{% endif %}
+  </tbody>
+</table>
+</div>
+<p><button type="button" class="btn btn-sm" data-consent-open>Change my cookie choice</button></p>
+<p>Google’s use of data is described in <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener">Google’s cookie information</a>. You can also delete cookies in your browser settings at any time.</p>
+{% else %}
+<p>None. This site currently sets <b>no cookies</b> and loads nothing from Google or any other third party. If we ever add analytics or advertising, it will be opt-in: a banner will ask first, nothing will load before you agree, and this page will list each cookie.</p>
+{% endif %}
+
+<p class="doc-links">Related: <a href="{{ L('/privacy') }}">Privacy policy</a> · <a href="{{ L('/terms') }}">Terms of use</a> · <a href="{{ L('/contact') }}">Contact</a></p>
+{% endblock %}

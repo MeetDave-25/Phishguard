@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ t('meta.thanks.t') }}{% endblock %}
+{% block description %}{{ t('meta.thanks.d') }}{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+{% block page_id %}thank-you{% endblock %}
+{% block main_class %}doc thanks{% endblock %}
+{% block content %}
+<p class="kicker">{{ t('thanks.k_review') if kind == 'review' else t('thanks.k_contact') }}</p>
+<h1>{{ t('thanks.h1') }}</h1>
+{% if kind == 'review' %}
+<p>{{ t('thanks.p_review') }}</p>
+{% else %}
+<p>{{ t('thanks.p_contact', privacy_url=L('/privacy')) }}</p>
+{% endif %}
+
+<div class="cta">
+  <a class="btn btn-lg" href="{{ L('/#checker') }}">{{ t('thanks.cta') }} <span aria-hidden="true">→</span></a>
+  <a class="link-arrow" href="{{ L('/') }}">{{ t('thanks.back') }}</a>
+</div>
+
+<h2>{{ t('thanks.while') }}</h2>
+<ul class="next">
+  <li><a href="{{ L('/about') }}">{{ t('thanks.l1') }}</a></li>
+  <li><a href="{{ L('/#faq') }}">{{ t('thanks.l2') }}</a></li>
+  {% if kind == 'review' %}<li><a href="{{ L('/contact') }}">{{ t('thanks.l3') }}</a></li>{% else %}<li><a href="{{ L('/feedback') }}">{{ t('thanks.l4') }}</a></li>{% endif %}
+  <li><a href="{{ L('/privacy') }}">{{ t('foot.privacy') }}</a></li>
+</ul>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}You’re Offline – PhishGuard{% endblock %}
+{% block description %}PhishGuard needs an internet connection to check links. Until you are back online, here are the golden rules for spotting scams.{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+{% block page_id %}offline{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block content %}
+<p class="kicker">No connection</p>
+<h1>You’re offline.</h1>
+<p>PhishGuard checks links on our server, so it needs the internet. Reconnect and try again. Until then, these rules work without any app:</p>
+<ul class="next">
+  <li><b>Never share an OTP, PIN or password.</b> No bank, police or company will ask for it.</li>
+  <li><b>Urgency is a red flag.</b> “Blocked today”, “act now” and “last warning” are pressure tactics.</li>
+  <li><b>Don’t log in through a link in a message.</b> Type the official address yourself.</li>
+  <li><b>If you already paid or shared a code</b>, call your bank immediately. In India call 1930.</li>
+</ul>
+<p><a class="btn" href="{{ L('/') }}">Try again</a></p>
+{% endblock %}

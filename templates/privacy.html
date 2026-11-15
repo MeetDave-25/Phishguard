@@ -1,43 +1,60 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Privacy – PhishGuard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <header class="nav"><a class="brand" href="/">PhishGuard</a></header>
-  <main class="doc">
-    <h1>Privacy, in plain words</h1>
-    <p>You paste suspicious links and messages into this tool, so you should know exactly what happens to them.</p>
+{% extends "base.html" %}
+{% block title %}Privacy Policy – PhishGuard{% endblock %}
+{% block description %}How PhishGuard handles what you paste, the messages and reviews you send, cookies and analytics. Plain words: nothing you scan is stored or logged.{% endblock %}
+{% block page_id %}privacy{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ crumbs_ld|tojson }}</script>{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{ L('/') }}">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Privacy policy</span></nav>
+<h1>Privacy policy</h1>
+<p class="updated">Last updated {{ site.updated }}</p>
+<p>You paste suspicious links and messages into PhishGuard, so you should know exactly what happens to them. This page says it in plain words.</p>
 
-    <h2>What we do not do</h2>
-    <ul>
-      <li>We do not store the links, messages or screenshots you submit. They are analyzed in memory and discarded when the answer is sent.</li>
-      <li>We do not use accounts, cookies, ads or analytics trackers.</li>
-      <li>We do not load fonts, scripts or images from other companies, so your visit is not shared with third parties.</li>
-      <li>We do not write submissions to logs. (Hosting companies keep their own standard connection logs, such as IP address and time, but those never contain what you submit.)</li>
-    </ul>
+<h2>1. Who we are</h2>
+<p>PhishGuard is a free project run by <b>{{ site.owner }}</b> (<a href="{{ site.owner_url }}" target="_blank" rel="noopener">meetdave.tech</a>). For any privacy question or request, use the <a href="{{ L('/contact') }}">contact form</a>.</p>
 
-    <h2>What briefly leaves our server (to give you a verdict)</h2>
-    <ul>
-      <li><b>Link checks:</b> the website’s domain name is sent to Cloudflare’s security DNS (1.1.1.2 and 1.1.1.1) to see if it is blocked. With Deep scan on, the domain is also sent to an RDAP service (domain registration date) and the server connects to the site to read its TLS certificate. The OpenPhish list is downloaded and compared locally, so nothing about your link is sent to OpenPhish.</li>
-      <li><b>Optional, only if the operator enabled it:</b> Google Safe Browsing (addresses are sent to Google) and an AI second opinion (text is sent to the AI provider). The page shows these as “on” only when enabled.</li>
-      <li><b>Inspect the page (on by default):</b> our server opens the link for you, follows redirects, and reads the page’s text without running any of its code. The website sees our server’s address, never yours, and no cookies are sent. Turn the toggle off to skip this entirely. The page contents are analyzed in memory and not kept.</li>
-      <li><b>Screenshots:</b> text is read on the server itself with an offline engine. Images are not sent to anyone.</li>
-    </ul>
+<h2>2. What you paste into the checker</h2>
+<ul>
+  <li>Links, messages and screenshots are analyzed <b>in memory and discarded</b> when the answer is sent. We do not store them and we do not write them to logs.</li>
+  <li><b>Link checks:</b> the website’s domain name is sent to Cloudflare’s security DNS (1.1.1.2 and 1.1.1.1) to see whether it is blocked. The OpenPhish list is downloaded and compared on our server, so nothing about your link is sent to OpenPhish.</li>
+  <li><b>Inspect the page (on by default):</b> our server opens the link for you, follows redirects, and reads the page’s text without running any of its code. The website sees our server’s address, never yours, and no cookies are sent. Turn the toggle off to skip this.</li>
+  <li><b>Deep scan (optional):</b> the domain is also sent to an RDAP service (to read its registration date) and the server connects to the site to read its security certificate.</li>
+  <li><b>Screenshots:</b> text is read on our server with an offline engine. Images are not sent to anyone.</li>
+  <li><b>Optional services, only if the operator turned them on:</b> Google Safe Browsing (addresses are sent to Google) and an AI second opinion (text is sent to the AI provider). The checker shows these as “on” only when enabled.</li>
+</ul>
 
-    <h2>What is stored on your device</h2>
-    <ul><li>Only your light/dark theme choice, in your browser’s local storage.</li></ul>
+<h2>3. Messages and reviews you send us</h2>
+<p>If you use the <a href="{{ L('/contact') }}">contact form</a> or the <a href="{{ L('/feedback') }}">review form</a>, we receive what you type: your message, your name and email if you give them, and for reviews a star rating. We use this only to reply to you, to fix problems, and, if you tick the box, to publish your review with the name you chose. Your email is never published. We keep these messages until we have dealt with your request, and you can ask us to delete yours at any time.</p>
+<p>These forms use spam protection that works without cookies or third-party services: a hidden field only bots fill in, a minimum-time check, and a request limit per connection.</p>
 
-    <h2>Temporary technical data</h2>
-    <ul><li>To stop abuse, your IP address is held in server memory for about one minute to count requests. It is never written to disk.</li></ul>
+<h2>4. Analytics and advertising</h2>
+{% if site.analytics %}
+<p>With your permission only, this site uses <b>Google Analytics</b>{% if site.ads_id %} and <b>Google Ads conversion measurement</b>{% endif %} to understand how the site is used{% if site.ads_id %} and whether our advertising works{% endif %}. Nothing from Google is loaded, and no analytics cookies are set, until you click <b>Accept</b> in the cookie banner. If you click <b>Decline</b>, or ignore it, none of it runs. You can change your mind at any time with <b>Cookie settings</b> in the footer.</p>
+<p>If you accept, Google receives data such as your IP address, device and browser details, the pages you view and, after our form pages, the fact that you contacted us. It is processed under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>. We never send what you paste into the checker to Google.</p>
+{% else %}
+<p>This site does not currently use analytics or advertising cookies, and it loads nothing from Google or any other third party. If that ever changes, it will be opt-in (a visible choice before anything is loaded) and this page will be updated first.</p>
+{% endif %}
 
-    <h2>Verify it yourself</h2>
-    <p>The code is small and readable, and accuracy numbers with their limits are in <code>eval/REPORT.md</code>. You can also run PhishGuard entirely on your own computer, where nothing leaves it except the domain look-ups above.</p>
+<h2>5. Cookies and local storage</h2>
+<p>We do not set cookies unless you accept analytics. We use your browser’s local storage to remember your theme choice{% if site.analytics %} and your cookie choice{% endif %}. Details are on the <a href="{{ L('/cookies') }}">cookie policy</a>.</p>
 
-    <h2>Limits</h2>
-    <p>PhishGuard gives a risk estimate, not a guarantee. It can miss scams and occasionally flag safe sites. If money or personal details are involved, contact your bank or the official website directly.</p>
-  </main>
-</body>
-</html>
+<h2>5a. Installing the app and “Share to PhishGuard”</h2>
+<p>PhishGuard can be installed on your phone like an app. When installed, you can share a suspicious message from another app (for example WhatsApp or SMS) to PhishGuard. The shared text is handed to your browser, kept there only for a moment, and checked exactly like text you paste: it is not stored and is not logged by us. The app keeps a small cache of the site’s own files so it loads quickly and works offline for the help page; see the <a href="{{ L('/cookies') }}">cookie policy</a>.</p>
+
+<h2>6. Temporary technical data</h2>
+<p>To stop abuse, your IP address is held in server memory for a short time (about one minute for the checker, up to an hour for the forms) to count requests. It is not written to disk by us. Our hosting provider may keep standard connection logs (IP address and time). Those logs do not contain what you paste, because scans are sent in the body of the request.</p>
+
+<h2>7. Your rights</h2>
+<p>Depending on where you live (for example under the EU/UK GDPR or India’s Digital Personal Data Protection Act), you may have the right to access, correct or delete your personal data, and to withdraw consent. The only personal data we hold is what you send through the forms. <a href="{{ L('/contact') }}">Contact us</a> and we will act on your request.</p>
+
+<h2>8. Children</h2>
+<p>PhishGuard is not directed at children under 13, and we do not knowingly collect their personal data.</p>
+
+<h2>9. Where data goes</h2>
+<p>The site is hosted with a cloud provider, and the services named above run internationally, so data may be processed outside your country.</p>
+
+<h2>10. Changes</h2>
+<p>If we change this policy we will update the date above, and we will not start any new tracking without asking you first.</p>
+
+<p class="doc-links">Related: <a href="{{ L('/cookies') }}">Cookie policy</a> · <a href="{{ L('/terms') }}">Terms of use</a> · <a href="{{ L('/about') }}">About PhishGuard</a></p>
+{% endblock %}

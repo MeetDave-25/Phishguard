@@ -55,3 +55,20 @@ every hop must resolve to public IPs and we connect to the validated IP itself (
     python tests/test_inspector.py   # 33 checks incl. SSRF, slow-drip, false-positive regressions
     python tests/test_scoring.py     # 306 legitimate URL variants must not be flagged
 See [eval/REPORT.md](eval/REPORT.md) for measured accuracy, limits, and bugs found.
+
+## Languages
+English, Hindi (`/hi/`), Gujarati (`/gu/`), Marathi (`/mr/`) and Spanish (`/es/`). Translations live in `translations/<code>.json`
+(English is the source; a missing key falls back to English). The home page, checker, results, forms and thank-you page are
+translated; the legal pages and About stay English (with a notice) because a wrong legal translation is worse than none.
+Search engines get `hreflang` alternates and a multilingual sitemap. Indic fonts (Noto) are self-hosted and downloaded only when a
+page uses those characters.
+
+**Add a language:** add it to `LANGS` in `i18n.py`, copy `translations/en.json` to `translations/<code>.json` and translate the values
+(keep `{placeholders}` and the few HTML tags), add scam phrases to `textrules_i18n.py`, add a font if the script needs one, then run
+`python tests/test_i18n.py`. **Have native speakers review the translations**: they were written without one.
+
+**Scam detection in other languages** (`textrules_i18n.py`): Hindi, Hinglish, Gujarati, Marathi, Spanish. Hand-tested only; there is no
+labelled benchmark in these languages yet. **QR codes** in uploaded screenshots are decoded offline (`qrscan.py`) and their links are
+analyzed ("quishing").
+
+Tests: `python tests/test_i18n.py && python tests/test_multilang.py`

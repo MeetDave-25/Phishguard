@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ t('meta.contact.t') }}{% endblock %}
+{% block description %}{{ t('meta.contact.d') }}{% endblock %}
+{% block page_id %}contact{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ crumbs_ld|tojson }}</script>{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{ L('/') }}">{{ t('crumb.home') }}</a> <span aria-hidden="true">/</span> <span aria-current="page">{{ t('crumb.contact') }}</span></nav>
+<h1>{{ t('contact.h1') }}</h1>
+<p>{{ t('contact.intro', review_url=L('/feedback')) }}</p>
+
+<form class="form" method="post" action="{{ L('/contact') }}" novalidate>
+  {% include "_form_bits.html" %}
+  {% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+  <label for="c-name">{{ t('contact.name') }} <span class="opt">{{ t('form.optional') }}</span></label>
+  <input id="c-name" name="name" type="text" maxlength="80" autocomplete="name" value="{{ form.name }}">
+
+  <label for="c-email">{{ t('contact.email') }} <span class="req">{{ t('contact.email_req') }}</span></label>
+  <input id="c-email" name="email" type="email" maxlength="120" autocomplete="email" required value="{{ form.email }}">
+
+  <label for="c-topic">{{ t('contact.topic') }}</label>
+  <select id="c-topic" name="topic">
+    {% for tp in topics %}<option value="{{ tp }}" {% if form.topic == tp %}selected{% endif %}>{{ t('topic.' ~ loop.index) }}</option>{% endfor %}
+  </select>
+
+  <label for="c-msg">{{ t('contact.message') }}</label>
+  <textarea id="c-msg" name="message" rows="6" minlength="10" maxlength="2000" required>{{ form.message }}</textarea>
+
+  <p class="form-note">{{ t('contact.note', privacy_url=L('/privacy')) }}</p>
+  <button class="btn btn-lg" type="submit">{{ t('contact.send') }}</button>
+</form>
+{% endblock %}

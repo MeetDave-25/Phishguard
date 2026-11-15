@@ -3,10 +3,12 @@ import ipaddress
 import re
 import socket
 import ssl
+import unicodedata
 from datetime import datetime, timezone
 from urllib.parse import urlparse, parse_qs
 
 import mlmodel
+import textrules_i18n
 
 ML_FLOOR, ML_MAX = 0.5, 60  # model contributes 0..60 points once p > 0.5
 
@@ -74,6 +76,8 @@ TEXT_RULES = [
     ("Job / investment scam", r"\b(work from home|part[- ]time job|earn (₹|rs\.?|\$)?\s?\d+|guaranteed returns?|double your money|crypto (investment|signal)|task.{0,10}(earn|commission))\b", 18),
     ("Refund / overpayment trick", r"\b(refund|reversal|wrongly (sent|credited)|accidentally (sent|transferred))\b", 10),
     ("Install remote-access app", r"\b(anydesk|teamviewer|quicksupport|rustdesk)\b", 26),
+    # "digital arrest" is not a real legal procedure anywhere: the phrase alone is a strong scam signal
+    ("Digital arrest scam", r"\bdigital arrest\b|\bdigitally arrested\b", 35),
 ]
 
 
@@ -322,10 +326,23 @@ def verdict(score: int) -> str:
     return "safe"
 
 
+_COMPILED_TEXT_RULES = [
+    (label, re.compile("|".join([f"(?:{base})"] + [f"(?:{x})" for x in textrules_i18n.EXTRA.get(label, [])]), re.I | re.S), weight)
+    for label, base, weight in TEXT_RULES
+]
+_CALL_RE = re.compile(r"\b(call|whatsapp|contact)\b|" + textrules_i18n.CALL_EXTRA, re.I)
+
+
+def _normalize_text(text: str) -> str:
+    """NFC + drop zero-width joiners so Indic text written in different ways matches the same pattern."""
+    return unicodedata.normalize("NFC", text).replace("\u200c", "").replace("\u200d", "")
+
+
 def analyze_text(text: str, live: bool = False) -> dict:
     findings, score = [], 0
-    for label, pattern, weight in TEXT_RULES:
-        m = re.search(pattern, text, re.I | re.S)
+    text = _normalize_text(text)
+    for label, rx, weight in _COMPILED_TEXT_RULES:
+        m = rx.search(text)
         if m:
             snippet = re.sub(r"\s+", " ", m.group(0))[:80]
             findings.append({"level": "high" if weight >= 20 else "medium", "title": label,
@@ -335,7 +352,7 @@ def analyze_text(text: str, live: bool = False) -> dict:
     if re.search(r"[A-Z]{6,}.*[A-Z]{6,}", text) and len(text) > 40:
         findings.append({"level": "low", "title": "Excessive CAPS", "detail": "Shouting text is a pressure tactic.", "points": 5})
         score += 5
-    if re.search(r"(?<!\d)\+?\d{10,13}(?!\d)", text) and re.search(r"\b(call|whatsapp|contact)\b", text, re.I):
+    if re.search(r"(?<!\d)\+?\d{10,13}(?!\d)", text) and _CALL_RE.search(text):
         findings.append({"level": "low", "title": "Asks you to call/WhatsApp a number", "detail": "Scammers move victims off official channels.", "points": 8})
         score += 8
 

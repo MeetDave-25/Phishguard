@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Terms of Use – PhishGuard{% endblock %}
+{% block description %}The rules for using PhishGuard: it gives a risk estimate, not a guarantee, and must be used lawfully and fairly. Read the terms before you rely on it.{% endblock %}
+{% block page_id %}terms{% endblock %}
+{% block main_class %}doc{% endblock %}
+{% block jsonld %}<script type="application/ld+json">{{ crumbs_ld|tojson }}</script>{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Breadcrumb"><a href="{{ L('/') }}">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Terms of use</span></nav>
+<h1>Terms of use</h1>
+<p class="updated">Last updated {{ site.updated }}</p>
+<p>By using PhishGuard you agree to these terms. If you do not agree, please do not use the site.</p>
+
+<h2>1. What PhishGuard is</h2>
+<p>PhishGuard is a free tool that estimates how risky a link, message or screenshot looks. It combines rules, a statistical model and public blocklists. It is run by {{ site.owner }}.</p>
+
+<h2>2. It is an estimate, not advice or a guarantee</h2>
+<p>The result is a risk <em>estimate</em>. It can miss scams and it can wrongly flag safe sites; our <a href="{{ L('/about#accuracy') }}">measured accuracy</a> and its limits are published. A “Looks safe” result does not prove that something is safe. Do not rely on PhishGuard as your only protection, and never share passwords, one-time codes or payment details because a tool said a link looked fine. If money or personal details are involved, contact your bank or the official website directly.</p>
+
+<h2>3. Acceptable use</h2>
+<ul>
+  <li>Use PhishGuard lawfully and for its purpose: checking things you received or are curious about.</li>
+  <li>Do not use it to probe, scan or attack systems or networks you do not own or have permission to test, and do not try to make our server connect to internal or private addresses.</li>
+  <li>Do not overload the service, bypass its request limits, or send automated bulk traffic without asking us first.</li>
+  <li>Do not submit content you have no right to share, or unlawful content.</li>
+</ul>
+
+<h2>4. Your content</h2>
+<p>You keep ownership of what you paste or write. Scans are processed as described in the <a href="{{ L('/privacy') }}">privacy policy</a> and are not stored. If you submit a review and tick the box to allow publication, you give us a free, non-exclusive right to display it, with the name you chose, on this site. You can ask us to remove it at any time.</p>
+
+<h2>5. Other websites and services</h2>
+<p>PhishGuard links to third-party sites (for example government reporting portals) and uses public data sources. We do not control them and are not responsible for their content or availability.</p>
+
+<h2>6. No warranty</h2>
+<p>PhishGuard is provided “as is” and “as available”, without warranties of any kind, to the fullest extent permitted by law. We do not promise that it will be uninterrupted, error-free or free of omissions.</p>
+
+<h2>7. Limitation of liability</h2>
+<p>To the fullest extent permitted by law, {{ site.owner }} is not liable for any loss or damage arising from your use of, or reliance on, PhishGuard, including losses from a scam that the tool failed to detect. Nothing in these terms limits any right or liability that cannot be limited by law.</p>
+
+<h2>8. Changes and contact</h2>
+<p>We may update these terms and will change the date above when we do. Continued use means you accept the updated terms. Questions? <a href="{{ L('/contact') }}">Contact us</a>.</p>
+
+<p class="doc-links">Related: <a href="{{ L('/privacy') }}">Privacy policy</a> · <a href="{{ L('/cookies') }}">Cookie policy</a> · <a href="{{ L('/about') }}">About PhishGuard</a></p>
+{% endblock %}

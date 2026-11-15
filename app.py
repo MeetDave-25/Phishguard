@@ -2,19 +2,24 @@ import os
 import time
 from collections import defaultdict, deque
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, redirect, request
 
 import ai
+import i18n
 import inspector
 import mlmodel
+import qrscan
 import reputation
-from analyzer import analyze
+import sitepages
+from analyzer import analyze, verdict
 
 mlmodel.available()  # load the model at startup so the first request is not slower or unscored
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 6 * 1024 * 1024
 IMAGE_TYPES = {"image/png", "image/jpeg", "image/webp", "image/gif"}
+app.register_blueprint(sitepages.bp)
+app.wsgi_app = i18n.LangPrefixMiddleware(app.wsgi_app)  # /hi/about is served by the /about route in Hindi
 
 # Behind a reverse proxy (Render, Fly, Cloudflare, nginx) set PHISHGUARD_PROXY=1 so client IPs and HTTPS are read correctly.
 if os.getenv("PHISHGUARD_PROXY"):
@@ -41,19 +46,25 @@ def rate_limited(kind: str) -> bool:
     return False
 
 
+@app.before_request
+def force_https():
+    """In production set PHISHGUARD_FORCE_HTTPS=1 (and PHISHGUARD_PROXY=1 behind a proxy): plain-HTTP requests get a 301 to HTTPS."""
+    if sitepages.config()["force_https"] and not request.is_secure and request.path != "/healthz":
+        return redirect(request.url.replace("http://", "https://", 1), 301)
+
+
 @app.after_request
 def security_headers(resp):
-    resp.headers["Content-Security-Policy"] = (
-        "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
-        "connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'")
+    resp.headers["Content-Security-Policy"] = sitepages.csp()
     resp.headers["X-Content-Type-Options"] = "nosniff"
     resp.headers["X-Frame-Options"] = "DENY"
-    resp.headers["Referrer-Policy"] = "no-referrer"
+    resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin" if sitepages.config()["ga_id"] or sitepages.config()["ads_id"] else "no-referrer"
     resp.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     if request.is_secure:
         resp.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    if request.path.startswith("/api/"):
+    if request.path.startswith("/api/") or request.path == "/healthz":
         resp.headers["Cache-Control"] = "no-store"
+        resp.headers["X-Robots-Tag"] = "noindex"
     return resp
 
 
@@ -77,16 +88,6 @@ def full_analysis(text: str, live: bool, use_ai: bool, inspect: bool = False) ->
     return result
 
 
-@app.get("/")
-def index():
-    return render_template("index.html")
-
-
-@app.get("/privacy")
-def privacy():
-    return render_template("privacy.html")
-
-
 @app.get("/healthz")
 def healthz():
     return jsonify(ok=True, ml=mlmodel.available())
@@ -98,38 +99,61 @@ def api_status():
                     "ocr": ai.available() or ai.ocr_available() or _tesseract_ok()})
 
 
+def _lang(v) -> str:
+    return v if v in i18n.LANGS else i18n.DEFAULT
+
+
 @app.post("/api/analyze")
 def api_analyze():
-    if rate_limited("analyze"):
-        return jsonify({"error": "Too many requests. Please wait a minute and try again."}), 429
     data = request.get_json(silent=True) or {}
+    lang = _lang(data.get("lang"))
+    if rate_limited("analyze"):
+        return jsonify({"error": i18n.plain("err.api_rate", lang)}), 429
     result = full_analysis(str(data.get("input", "")), bool(data.get("live")), bool(data.get("ai")), bool(data.get("inspect")))
-    return jsonify(result), (400 if "error" in result else 200)
+    if "error" in result:
+        result["error"] = i18n.plain("err.empty", lang)
+        return jsonify(result), 400
+    return jsonify(i18n.localize_result(result, lang))
 
 
 @app.post("/api/analyze-image")
 def api_analyze_image():
+    lang = _lang(request.form.get("lang"))
     if rate_limited("image"):
-        return jsonify({"error": "Too many requests. Please wait a minute and try again."}), 429
+        return jsonify({"error": i18n.plain("err.api_rate", lang)}), 429
     f = request.files.get("image")
     if not f or f.mimetype not in IMAGE_TYPES:
-        return jsonify({"error": "Upload a PNG, JPG, WEBP or GIF screenshot."}), 400
+        return jsonify({"error": i18n.plain("err.img", lang)}), 400
+    raw = f.read()
+    if qrscan.too_large(raw):
+        return jsonify({"error": i18n.plain("err.pixels", lang)}), 413
+    codes = qrscan.decode(raw)  # links hidden inside QR codes ("quishing") are invisible to text filters
     try:
-        read = ai.read_image(f.read(), f.mimetype)
+        read = ai.read_image(raw, f.mimetype)
     except RuntimeError as e:
-        return jsonify({"error": str(e)}), 501
+        if not codes:
+            return jsonify({"error": str(e)}), 501
+        read = {"text": "", "engine": "qr"}
     except Exception:
-        return jsonify({"error": "Could not read the screenshot."}), 502
-    if not read["text"]:
-        return jsonify({"error": "No text found in that image."}), 422
-    result = full_analysis(read["text"], request.form.get("live") == "1", request.form.get("ai") == "1", request.form.get("inspect") == "1")
-    result["extracted_text"], result["ocr_engine"] = read["text"], read["engine"]
-    return jsonify(result)
+        if not codes:
+            return jsonify({"error": i18n.plain("err.noocr", lang)}), 502
+        read = {"text": "", "engine": "qr"}
+    text = (read["text"] + "\n" + "\n".join(codes)).strip() if codes else read["text"]
+    if not text:
+        return jsonify({"error": i18n.plain("err.noocr", lang)}), 422
+    result = full_analysis(text, request.form.get("live") == "1", request.form.get("ai") == "1", request.form.get("inspect") == "1")
+    result["extracted_text"], result["ocr_engine"], result["qr"] = text, read["engine"], codes
+    if codes:
+        result["findings"].insert(0, {"level": "low", "title": "Link hidden inside a QR code",
+                                      "detail": "A QR code hides the address from your eyes. Scammers use QR codes to get past text filters ('quishing').", "points": 8})
+        result["score"] = min(100, result["score"] + 8)
+        result["verdict"] = verdict(result["score"])
+    return jsonify(i18n.localize_result(result, lang))
 
 
 @app.errorhandler(413)
 def too_large(_):
-    return jsonify({"error": "File too large (max 6 MB)."}), 413
+    return jsonify({"error": i18n.plain("err.big")}), 413
 
 
 def _tesseract_ok() -> bool:
