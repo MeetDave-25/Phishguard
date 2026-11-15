@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PhishGuard – See the scam before it sees you</title>
+  <meta name="description" content="A free, private scam checker. Paste a link, SMS, WhatsApp message or screenshot and see exactly why it is risky.">
+  <meta name="theme-color" content="#efece4">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff4a1c' d='M12 2l9 3.5V12c0 5-4 8.5-9 10-5-1.5-9-5-9-10V5.5z'/%3E%3C/svg%3E">
+  <link rel="preload" href="{{ url_for('static', filename='fonts/instrument-serif-latin-400-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <a class="skip" href="#checker">Skip to the checker</a>
+
+  <!-- NAV -->
+  <header class="topbar" id="topbar">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="/" aria-label="PhishGuard home">
+        <svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="mk-a" d="M12 2l9 3.5V12c0 5-4 8.5-9 10-5-1.5-9-5-9-10V5.5z"/><path class="mk-b" d="M7.5 12.2l3 3 6-6.4" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        PhishGuard
+      </a>
+      <div class="links" id="links">
+        <a href="#story">The story</a>
+        <a href="#checker">Try it</a>
+        <a href="#layers">How it works</a>
+        <a href="#accuracy">Accuracy</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-actions">
+        <button id="theme" class="pill-btn" aria-label="Toggle light and dark theme"><span class="t-light">Light</span><span class="t-dark">Dark</span></button>
+        <a class="btn btn-sm" href="#checker">Check a link</a>
+        <button id="burger" class="pill-btn burger" aria-label="Menu" aria-expanded="false">Menu</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <p class="kicker reveal">Free scam &amp; phishing checker</p>
+      <h1 class="reveal d1">Scams look real.<br><em>Until you look closer.</em></h1>
+
+      <div class="hero-row">
+        <p class="lead reveal d2">Paste a suspicious link, SMS, WhatsApp message or screenshot. PhishGuard shows you a risk score, and the exact reasons behind it, in plain words.</p>
+        <div class="cta reveal d3">
+          <a class="btn btn-lg" href="#checker">Check a link <span aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="#story">See how a scam works <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+
+      <!-- looping URL x-ray -->
+      <div class="xray reveal d3" aria-hidden="true">
+        <svg viewBox="0 0 980 150" preserveAspectRatio="xMidYMid meet">
+          <text class="x-url" x="0" y="82">http://hdfc<tspan class="x-bad">-bank-verify.click</tspan>/login</text>
+          <path class="x-line" pathLength="100" d="M 290 98 H 766"/>
+          <g class="x-tag"><rect x="400" y="112" width="260" height="30" rx="15"/><text x="530" y="132" text-anchor="middle">lookalike of HDFC · +35</text></g>
+        </svg>
+      </div>
+
+      <ul class="facts reveal d4">
+        <li><b>0</b> submissions stored</li>
+        <li><b>0</b> cookies or trackers</li>
+        <li><b>3</b> ways in: link, text, screenshot</li>
+      </ul>
+    </section>
+
+    <!-- ================= STORY (pinned SVG scrollytelling) ================= -->
+    <section class="story" id="story" data-story data-steps="5" aria-label="How a phishing scam unfolds">
+      <div class="pin">
+        <div class="story-text">
+          <p class="kicker">A scam, in five scenes</p>
+          <div class="st-wrap">
+            <article class="st st0"><span class="st-n">01 / 05</span><h2>A text arrives at 3:47&nbsp;AM.</h2><p>It looks like it’s from your bank. The sender name is right. The tone is calm and official. Nothing seems wrong yet.</p></article>
+            <article class="st st1"><span class="st-n">02 / 05</span><h2>Then the pressure starts.</h2><p>“Blocked today.” “Update now.” Scammers rush you on purpose. A frightened person doesn’t stop to check.</p></article>
+            <article class="st st2"><span class="st-n">03 / 05</span><h2>The link is almost right.</h2><p>Real bank: <b>hdfcbank.com</b>. This one: <b>hdfc-bank-verify.click</b>. A few extra words and a strange ending is all it takes to fool a hurried eye.</p></article>
+            <article class="st st3"><span class="st-n">04 / 05</span><h2>PhishGuard reads what you can’t.</h2><p>It checks the lookalike domain, the risky ending, the pressure language, and live blocklists. In about a second, every red flag is on the table.</p></article>
+            <article class="st st4"><span class="st-n">05 / 05</span><h2>You delete it. Nothing lost.</h2><p>No password typed, no OTP shared, no money moved. That is the whole point: seeing it <em>before</em> you click.</p></article>
+          </div>
+          <div class="rail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+
+        <div class="stage" aria-hidden="true">
+          <svg viewBox="0 0 760 640" preserveAspectRatio="xMidYMid meet">
+            <!-- phone -->
+            <g transform="translate(40 0)">
+              <g class="k fade rise a00 d06">
+                <rect class="ph" x="60" y="20" width="290" height="600" rx="42"/>
+                <rect class="ink-f" x="170" y="36" width="70" height="9" rx="4.5"/>
+                <text class="t-small mid-t" x="205" y="86" text-anchor="middle">3:47 AM</text>
+                <text class="t-mono mid-t" x="84" y="122">HDFC-ALERT</text>
+
+                <!-- message bubble 1 -->
+                <g class="k fade rise a04 d08 dim-late">
+                  <rect class="bub" x="80" y="136" width="250" height="122" rx="18"/>
+                  <text class="t-mono" x="96" y="168">Dear customer, your</text>
+                  <text class="t-mono" x="96" y="192">account will be <tspan class="strong">BLOCKED</tspan></text>
+                  <text class="t-mono" x="96" y="216"><tspan class="strong">today</tspan>. Update <tspan class="strong">KYC now</tspan>.</text>
+                  <path class="ul k draw a22 d05" pathLength="100" d="M 220.8 197 H 275.4"/>
+                  <path class="ul k draw a26 d05" pathLength="100" d="M 96 221 H 135"/>
+                  <path class="ul k draw a30 d05" pathLength="100" d="M 205 221 H 259.6"/>
+                </g>
+
+                <!-- message bubble 2 : the link -->
+                <g class="k fade rise a33 d06">
+                  <rect class="bub bub-link" x="80" y="278" width="270" height="72" rx="18"/>
+                  <text class="t-mono link-t" x="96" y="308">http://hdfc-bank-</text>
+                  <text class="t-mono link-t" x="96" y="330">verify.click/login</text>
+                  <rect class="focus k draw a40 d06" pathLength="100" x="74" y="272" width="282" height="84" rx="22"/>
+                  <path class="strike k draw a84 d05" pathLength="100" d="M 90 319 H 340"/>
+                </g>
+
+                <!-- real vs fake -->
+                <g class="k fade rise a43 d07">
+                  <rect class="cmp" x="80" y="372" width="270" height="170" rx="16"/>
+                  <text class="t-tiny mid-t" x="98" y="400">REAL</text>
+                  <text class="t-mono good-t" x="98" y="424">hdfcbank.com</text>
+                  <path class="tick k draw a47 d04" pathLength="100" d="M 262 416 l 7 7 l 14 -15"/>
+                  <text class="t-tiny mid-t" x="98" y="466">THIS ONE</text>
+                  <text class="t-mono bad-t" x="98" y="490">hdfc-bank-verify.click</text>
+                  <path class="ul k draw a50 d05" pathLength="100" d="M 143.2 497 H 275.6"/>
+                  <path class="ul k draw a54 d04" pathLength="100" d="M 275.6 497 H 307"/>
+                  <text class="t-tiny bad-t" x="98" y="522">extra words + wrong ending</text>
+                </g>
+
+                <rect class="bar" x="100" y="572" width="210" height="28" rx="14"/>
+
+                <!-- scan beam -->
+                <rect class="scan k a60 d14" x="62" y="22" width="286" height="3"/>
+              </g>
+            </g>
+
+            <!-- verdict side -->
+            <g class="verdict-side">
+              <g class="k fade a60 d06">
+                <circle class="ring-bg" cx="560" cy="110" r="58" fill="none" stroke-width="12"/>
+                <circle class="ring-fg k draw91 a62 d14" pathLength="100" cx="560" cy="110" r="58" fill="none" stroke-width="12" stroke-linecap="round" transform="rotate(-90 560 110)"/>
+                <text id="story-score" class="score" x="560" y="124" text-anchor="middle">0</text>
+                <text class="t-tiny mid-t" x="560" y="146" text-anchor="middle">RISK</text>
+              </g>
+
+              <g class="k fade rise a64 d05"><rect class="flag" x="400" y="210" width="330" height="42" rx="10"/><circle class="dot-r" cx="420" cy="231" r="5"/><text class="t-flag" x="436" y="236">Lookalike of HDFC Bank</text><text class="t-mono mid-t" x="712" y="236" text-anchor="end">+35</text></g>
+              <g class="k fade rise a68 d05"><rect class="flag" x="400" y="262" width="330" height="42" rx="10"/><circle class="dot-r" cx="420" cy="283" r="5"/><text class="t-flag" x="436" y="288">Risky ending (.click)</text><text class="t-mono mid-t" x="712" y="288" text-anchor="end">+14</text></g>
+              <g class="k fade rise a72 d05"><rect class="flag" x="400" y="314" width="330" height="42" rx="10"/><circle class="dot-a" cx="420" cy="335" r="5"/><text class="t-flag" x="436" y="340">Pressure + KYC language</text><text class="t-mono mid-t" x="712" y="340" text-anchor="end">+28</text></g>
+              <g class="k fade rise a76 d05"><rect class="flag" x="400" y="366" width="330" height="42" rx="10"/><circle class="dot-a" cx="420" cy="387" r="5"/><text class="t-flag" x="436" y="392">Model: looks like phishing hosts</text><text class="t-mono mid-t" x="712" y="392" text-anchor="end">+24</text></g>
+
+              <g class="k fade pop a80 d05 stamp-g">
+                <g transform="rotate(-6 565 480)">
+                  <rect class="stamp" x="415" y="446" width="300" height="68" rx="6"/>
+                  <text class="stamp-t" x="565" y="492" text-anchor="middle">LIKELY A SCAM</text>
+                </g>
+              </g>
+
+              <g class="k fade rise a86 d05">
+                <path class="ok-tick k draw a88 d05" pathLength="100" d="M 408 566 l 12 12 l 24 -26"/>
+                <text class="t-ok" x="462" y="580">Deleted. Nothing lost.</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CHECKER ================= -->
+    <section class="section" id="checker">
+      <div class="section-head reveal">
+        <p class="kicker">Now you try</p>
+        <h2>Paste something <em>suspicious.</em></h2>
+        <p>A link, a message, or a screenshot. Nothing you submit is stored.</p>
+      </div>
+
+      <div class="checker reveal d1">
+        <div class="tabs">
+          <span class="tab-hint">Try an example</span>
+          <button class="chip" data-example="http://paypa1-secure-login.xyz/verify/account">Fake PayPal link</button>
+          <button class="chip" data-example="Dear customer, your SBI account will be blocked today. Update your KYC immediately: http://sbi-kyc-update.top/login  Share OTP to confirm.">KYC SMS</button>
+          <button class="chip" data-example="https://github.com">Safe link</button>
+        </div>
+
+        <label class="sr" for="input">Link or message to check</label>
+        <textarea id="input" rows="4" placeholder="Paste a link or message here…  e.g. https://hdfc-bank-verify.click/login"></textarea>
+
+        <div id="drop" class="drop" tabindex="0">
+          <span class="drop-ic" aria-hidden="true">+</span>
+          <span><b>Got a screenshot?</b> Drop it here, paste it (Ctrl+V) or <label class="link">browse<input type="file" id="file" accept="image/*" hidden></label></span>
+          <span id="fname" class="muted"></span>
+        </div>
+
+        <div class="row">
+          <div class="toggles">
+            <label class="toggle" title="Our server visits the link for you (you stay hidden), follows redirects and reads the page without running it. Catches fake login pages.">
+              <input type="checkbox" id="inspect" checked><span class="track"></span>
+              <span>Inspect the page <small>(follows redirects, reads it safely)</small></span>
+            </label>
+            <label class="toggle" title="Looks up domain age and TLS certificate over the network. Slower.">
+              <input type="checkbox" id="live"><span class="track"></span>
+              <span>Deep scan <small>(domain age + certificate)</small></span>
+            </label>
+            <label class="toggle" id="ai-toggle" title="Sends the text to an AI provider for a second opinion. Needs an API key on the server.">
+              <input type="checkbox" id="ai" disabled><span class="track"></span>
+              <span>AI second opinion <small id="ai-note">(Claude)</small></span>
+            </label>
+          </div>
+          <button id="go" class="btn btn-lg">Analyze <span class="kbd">Ctrl ↵</span></button>
+        </div>
+        <div id="intel" class="intel"></div>
+      </div>
+
+      <section id="result" class="result hidden" aria-live="polite"></section>
+    </section>
+
+    <!-- ================= LAYERS (pinned SVG) ================= -->
+    <section class="story layers-story" id="layers" data-story data-steps="1" aria-label="The four layers of detection">
+      <div class="pin">
+        <div class="story-text">
+          <p class="kicker">How it decides</p>
+          <h2 class="big-h">Four layers.<br><em>One clear answer.</em></h2>
+          <ol class="layer-list">
+            <li class="k fade rise a30 d10"><b>Rules</b><span>Lookalike brands, scam phrases, risky endings, hidden redirects.</span></li>
+            <li class="k fade rise a46 d10"><b>A trained model</b><span>Rates the web address against thousands of real phishing sites.</span></li>
+            <li class="k fade rise a62 d10"><b>Live blocklists</b><span>OpenPhish and Cloudflare’s security DNS confirm known threats.</span></li>
+            <li class="k fade rise a78 d10"><b>Deep scan</b><span>Domain age and certificate. Scam sites are often days old.</span></li>
+          </ol>
+        </div>
+        <div class="stage" aria-hidden="true">
+          <svg viewBox="0 0 520 560" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(260 0)">
+              <g transform="translate(0 472)"><g class="k layer L4 a05 d50"><path class="side" d="M -180 0 L 0 52 L 180 0 L 180 14 L 0 66 L -180 14 Z"/><path class="top l4" d="M -180 0 L 0 -52 L 180 0 L 0 52 Z"/><text class="ln" x="0" y="14" text-anchor="middle">4</text></g></g>
+              <g transform="translate(0 348)"><g class="k layer L3 a05 d50"><path class="side" d="M -180 0 L 0 52 L 180 0 L 180 14 L 0 66 L -180 14 Z"/><path class="top l3" d="M -180 0 L 0 -52 L 180 0 L 0 52 Z"/><text class="ln ln-l" x="0" y="14" text-anchor="middle">3</text></g></g>
+              <g transform="translate(0 224)"><g class="k layer L2 a05 d50"><path class="side" d="M -180 0 L 0 52 L 180 0 L 180 14 L 0 66 L -180 14 Z"/><path class="top l2" d="M -180 0 L 0 -52 L 180 0 L 0 52 Z"/><text class="ln ln-l" x="0" y="14" text-anchor="middle">2</text></g></g>
+              <g transform="translate(0 100)"><g class="k layer L1 a05 d50"><path class="side" d="M -180 0 L 0 52 L 180 0 L 180 14 L 0 66 L -180 14 Z"/><path class="top l1" d="M -180 0 L 0 -52 L 180 0 L 0 52 Z"/><text class="ln ln-l" x="0" y="14" text-anchor="middle">1</text></g></g>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ACCURACY ================= -->
+    <section class="section dark-band" id="accuracy">
+      <div class="section-head reveal">
+        <p class="kicker">Measured, not claimed</p>
+        <h2>Honest numbers on <em>real phishing.</em></h2>
+        <p>Tested on thousands of real phishing sites and popular safe sites, with every domain kept out of training.</p>
+      </div>
+      <div class="stats">
+        <div class="stat reveal"><div class="big-num"><span data-count="73">0</span><sup>%</sup></div><p>of real phishing flagged at the <b>“Be careful”</b> level</p></div>
+        <div class="stat reveal d1"><div class="big-num"><span data-count="98">0</span><sup>%</sup></div><p>precision when it says <b>“Likely a scam”</b></p></div>
+        <div class="stat reveal d2"><div class="big-num"><span data-count="1">0</span><sup>%</sup></div><p>of safe sites wrongly flagged as <b>“Likely a scam”</b></p></div>
+        <div class="stat reveal d3"><div class="big-num"><span data-count="7">0</span><sup>×</sup></div><p>more phishing caught than the first, rules-only version</p></div>
+      </div>
+      <p class="fine reveal">No checker is perfect. About 1 in 4 phishing links still slips past the “Be careful” level, and the test data has limits. We publish both in the full report (<code>eval/REPORT.md</code>) and you can re-run the test yourself.</p>
+    </section>
+
+    <!-- ================= PRIVACY (scroll-scrubbed manifesto) ================= -->
+    <section class="section" id="privacy">
+      <p class="kicker center-k reveal">Privacy first</p>
+      <p class="manifesto" data-scrub>You are checking something sensitive, so we treat it that way. We don’t store what you paste. We don’t use accounts, cookies or analytics. We don’t load a single font, script or image from anyone else. You can even run the whole thing on your own computer.</p>
+      <p class="center reveal"><a class="ghost" href="/privacy">Read the full privacy page</a></p>
+    </section>
+
+    <!-- ================= HELP ================= -->
+    <section class="section" id="help">
+      <div class="section-head reveal">
+        <p class="kicker">Already a victim?</p>
+        <h2>Act fast. <em>The first hour matters most.</em></h2>
+        <p>Call your bank to freeze the account, then report it officially.</p>
+      </div>
+      <div class="helplines reveal">
+        <a class="help" href="https://cybercrime.gov.in" target="_blank" rel="noopener"><span class="c">India</span><span class="d">Call <strong>1930</strong> · cybercrime.gov.in</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="help" href="https://reportfraud.ftc.gov" target="_blank" rel="noopener"><span class="c">United States</span><span class="d">reportfraud.ftc.gov</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="help" href="https://reportfraud.police.uk" target="_blank" rel="noopener"><span class="c">United Kingdom</span><span class="d">Action Fraud · reportfraud.police.uk</span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="help" href="https://www.scamwatch.gov.au" target="_blank" rel="noopener"><span class="c">Australia</span><span class="d">scamwatch.gov.au</span><span class="go" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="section narrow" id="faq">
+      <div class="section-head reveal">
+        <p class="kicker">FAQ</p>
+        <h2>Questions <em>people ask.</em></h2>
+      </div>
+      <div class="faq reveal">
+        <details><summary>Can PhishGuard guarantee a link is safe?</summary><p>No tool can. “Looks safe” means we found no strong warning signs. Brand-new scam sites may not be on any list yet, so never enter passwords or OTPs on a site you reached through a message. Type the official address yourself.</p></details>
+        <details><summary>Is my data stored or sold?</summary><p>No. Submissions are analyzed in memory and not stored or logged. There are no accounts, cookies or ad trackers. See the <a href="/privacy">privacy page</a> for exactly which look-ups happen.</p></details>
+        <details><summary>What does the Deep scan do?</summary><p>It looks up how old the domain is and reads the website’s security certificate. Scam sites are very often only days old. It is slower, so it is optional.</p></details>
+        <details><summary>How accurate is it?</summary><p>On our held-out test it flags about 73% of real phishing at “Be careful” with about 6.5% false alarms, and 98% precision at “Likely a scam”. The limits of that test, and a bug we found and fixed in it, are published too.</p></details>
+        <details><summary>Does it work for messages in Hindi or other languages?</summary><p>Link checks work in any language. The message scanner currently understands English phrases best; more languages are planned.</p></details>
+        <details><summary>I already sent money or an OTP. What now?</summary><p>Call your bank immediately to block the transaction, change your passwords, and report it. In India call <b>1930</b> and file at cybercrime.gov.in.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="foot-cta">
+      <h2>Got a suspicious message <em>right now?</em></h2>
+      <a class="btn btn-lg" href="#checker">Open the checker <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="wordmark" aria-hidden="true">PhishGuard</div>
+    <div class="foot-bottom">
+      <p class="foot-note">A free scam and phishing checker. A helper, not a guarantee. When in doubt, don’t click. · <a href="/privacy">Privacy</a></p>
+      <p class="made">Made by <b>Meet G. Dave</b> <a class="by" href="https://meetdave.tech" target="_blank" rel="noopener">meetdave.tech <span aria-hidden="true">↗</span></a></p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script src="{{ url_for('static', filename='story.js') }}"></script>
+</body>
+</html>

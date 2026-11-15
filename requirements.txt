@@ -1,0 +1,8 @@
+flask>=3.0
+gunicorn>=22.0              # production server (Linux/Docker)
+numpy
+scikit-learn>=1.5           # ML hostname model
+joblib
+rapidocr-onnxruntime>=1.3   # free offline screenshot OCR
+python-whois>=0.9           # optional fallback for domain age
+# anthropic>=0.40           # optional, only if you ever get an API key (AI second opinion)

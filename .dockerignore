@@ -1,0 +1,6 @@
+data
+eval
+extension
+__pycache__
+*.pyc
+.git

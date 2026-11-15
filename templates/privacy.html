@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy – PhishGuard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="nav"><a class="brand" href="/">PhishGuard</a></header>
+  <main class="doc">
+    <h1>Privacy, in plain words</h1>
+    <p>You paste suspicious links and messages into this tool, so you should know exactly what happens to them.</p>
+
+    <h2>What we do not do</h2>
+    <ul>
+      <li>We do not store the links, messages or screenshots you submit. They are analyzed in memory and discarded when the answer is sent.</li>
+      <li>We do not use accounts, cookies, ads or analytics trackers.</li>
+      <li>We do not load fonts, scripts or images from other companies, so your visit is not shared with third parties.</li>
+      <li>We do not write submissions to logs. (Hosting companies keep their own standard connection logs, such as IP address and time, but those never contain what you submit.)</li>
+    </ul>
+
+    <h2>What briefly leaves our server (to give you a verdict)</h2>
+    <ul>
+      <li><b>Link checks:</b> the website’s domain name is sent to Cloudflare’s security DNS (1.1.1.2 and 1.1.1.1) to see if it is blocked. With Deep scan on, the domain is also sent to an RDAP service (domain registration date) and the server connects to the site to read its TLS certificate. The OpenPhish list is downloaded and compared locally, so nothing about your link is sent to OpenPhish.</li>
+      <li><b>Optional, only if the operator enabled it:</b> Google Safe Browsing (addresses are sent to Google) and an AI second opinion (text is sent to the AI provider). The page shows these as “on” only when enabled.</li>
+      <li><b>Inspect the page (on by default):</b> our server opens the link for you, follows redirects, and reads the page’s text without running any of its code. The website sees our server’s address, never yours, and no cookies are sent. Turn the toggle off to skip this entirely. The page contents are analyzed in memory and not kept.</li>
+      <li><b>Screenshots:</b> text is read on the server itself with an offline engine. Images are not sent to anyone.</li>
+    </ul>
+
+    <h2>What is stored on your device</h2>
+    <ul><li>Only your light/dark theme choice, in your browser’s local storage.</li></ul>
+
+    <h2>Temporary technical data</h2>
+    <ul><li>To stop abuse, your IP address is held in server memory for about one minute to count requests. It is never written to disk.</li></ul>
+
+    <h2>Verify it yourself</h2>
+    <p>The code is small and readable, and accuracy numbers with their limits are in <code>eval/REPORT.md</code>. You can also run PhishGuard entirely on your own computer, where nothing leaves it except the domain look-ups above.</p>
+
+    <h2>Limits</h2>
+    <p>PhishGuard gives a risk estimate, not a guarantee. It can miss scams and occasionally flag safe sites. If money or personal details are involved, contact your bank or the official website directly.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,84 @@
+
+=== rules | held-out test set: 3872 phishing, 4116 benign ===
+ROC-AUC: 0.6741
+ threshold  detect%  falsealarm%  precision%     F1
+        15     24.7         1.90        92.5  0.390
+        25     10.4         1.09        90.0  0.187
+        40      4.4         0.17        96.0  0.084
+        55      0.6         0.00       100.0  0.013
+        70      0.1         0.00       100.0  0.002
+
+Top false alarms (safe sites flagged):
+   49  https://amazon.work/search?q=weather
+   48  https://www.xn--mgbkt9eckr.net/login
+   48  https://accounts.xn--72caa3cygoc0d9c.com/account/security
+   47  https://portal.amazon-value-service.com
+   42  https://xn--l3caaaa1kg4f.net
+   42  https://www.xn--pckua2a7gp15o89zb.com/user/settings
+   42  https://www.xn--b1aew.xn--p1ai/user/settings
+   35  https://www2.research.google/search?q=weather
+Sample missed phishing:
+       https://calm-faun-867857.netlify.app/sitemap?locale=en_us
+       https://www.roblox.com.et/users/4925259156/profile
+       https://is.gd/4Zd4AO
+       https://www.roblox.et/communities/8061542756/paw#!/about
+       https://policy-transparency-guidelines.onrender.com/help
+       https://2h.ae/LBPUp
+       https://policy-trust-assurance.onrender.com/help
+       https://policyoperationsreview-kvnj.onrender.com/help
+
+=== ml | held-out test set: 3872 phishing, 4116 benign ===
+ROC-AUC: 0.9316
+ threshold  detect%  falsealarm%  precision%     F1
+        15     96.3        40.79        68.9  0.804
+        25     93.3        28.21        75.7  0.836
+        40     86.1        17.23        82.5  0.842
+        55     79.4        10.08        88.1  0.835
+        70     70.6         4.98        93.0  0.802
+
+Top false alarms (safe sites flagged):
+  100  https://b406929acabac9b095f124c81bdfcf57f.com/search?q=weather
+   99  https://xn--80ajghhoc2aj1c8b.xn--p1ai/login
+   98  https://en.indianvisa-bangladesh.nic.in/signin
+   98  https://azure-devices-provisioning.net/user/settings
+   97  https://www.lord-of-the-oceanspielen.com/signin
+   97  https://shakespearesglobe.com/help/contact
+   97  https://princesspolly.com.au
+   97  https://consultaremedios.com.br/account
+Sample missed phishing:
+       http://www.copbgdacol.com/
+       http://www.grichionni.eu
+       https://www.huntourage.com/NCDHM/a1b2c3/cc634b7a1f451c6546845649d584650b/start
+       http://www.notifyhubss.net/20566fbb7l645f4e00s8cf853ccb838b7835.html
+       https://zyexx.com/qe0d53eefp2efa47e31b23f6e9f2c7c32c10.html
+       https://ztc2pd.org/cr5dx9jbi/yahoo.html
+       http://dailyrapnews.com/1441/account/customer_center/customer-idpp00c437/myaccount/signin
+       https://surveway.com/9721671359802998026651083119278660758447689&978427988388710402524204808177898718822489629
+
+=== combined | held-out test set: 3872 phishing, 4116 benign ===
+ROC-AUC: 0.8907
+ threshold  detect%  falsealarm%  precision%     F1
+        15     79.6         9.60        88.6  0.839
+        25     73.4         6.51        91.4  0.814
+        40     63.5         2.84        95.5  0.763
+        55     47.8         0.78        98.3  0.643
+        70     24.0         0.19        99.1  0.386
+
+Top false alarms (safe sites flagged):
+   86  https://unionbankonline.co.in
+   85  https://usgovcloud-static.microsoft/help/contact
+   82  https://xn--80ajghhoc2aj1c8b.xn--p1ai/login
+   78  https://online-banking-services.com/login
+   76  https://portal.amazon-value-service.com
+   76  https://48492908.xyz/
+   74  https://www.lord-of-the-oceanspielen.com/signin
+   73  https://lord-of-the-ocean-slot.com/account
+Sample missed phishing:
+       https://is.gd/4Zd4AO
+       https://www.roblox.et/communities/8061542756/paw#!/about
+       https://2h.ae/LBPUp
+       https://www.r.oblox.com.et/users/3167626725/profile
+       https://2h.ae/EWTrV
+       https://www.roblox.et/games/2753915549/Blox-Fruits?privateServerLinkCode=15536614876321509621505495182396
+       http://www.copbgdacol.com/
+       https://polishcrew.name.ng/boa/verification/8n5b08538708491meedc/index.php?country.x=us-united%20states&lang.x
