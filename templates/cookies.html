@@ -16,6 +16,7 @@
   <thead><tr><th>Name</th><th>Where</th><th>Purpose</th><th>Lasts</th></tr></thead>
   <tbody>
     <tr><td><code>theme</code></td><td>Local storage</td><td>Remembers whether you chose light or dark mode.</td><td>Until you clear site data</td></tr>
+    <tr><td><code>pg_lang</code></td><td>Local storage</td><td>Remembers the language you chose, or the one we suggested from your browser settings, so the site opens in it next time.</td><td>Until you clear site data</td></tr>
     <tr><td>Cache storage <code>pg-static-*</code></td><td>Service worker</td><td>Copies of this site’s own files (styles, scripts, fonts, icons) so the app opens fast and can show an offline page. It never contains anything you paste, and no pages or API results are cached.</td><td>Until the site updates or you clear site data</td></tr>
     {% if site.analytics %}<tr><td><code>pg_consent</code></td><td>Local storage</td><td>Remembers your cookie choice (accept or decline) so we don’t keep asking.</td><td>Until you clear site data</td></tr>{% endif %}
   </tbody>

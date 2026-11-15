@@ -21,6 +21,51 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && langMenu.open) { langMenu.open = false; langMenu.querySelector("summary").focus(); } });
   }
 
+  // ---------- language preference: remember the choice, switch once on first visit ----------
+  const SUPPORTED = ["hi", "gu", "mr", "es"];
+  const TRANSLATED_PATHS = ["/", "/contact", "/feedback"];  // pages that exist in every language
+  const pageLang = root.lang || "en";
+  const getPref = () => { try { return localStorage.getItem("pg_lang"); } catch { return null; } };
+  const setPref = (v) => { try { localStorage.setItem("pg_lang", v); } catch {} };
+  // an explicit choice in the switcher is remembered (choosing English too, so we never switch away again)
+  document.querySelectorAll("#lang a[hreflang], .sheet-langs a[hreflang]").forEach((a) => a.addEventListener("click", () => setPref(a.getAttribute("hreflang"))));
+  if (pageLang === "en" && TRANSLATED_PATHS.includes(location.pathname)) {
+    let target = getPref();
+    let auto = false;
+    if (!target) {  // first visit ever: look at the browser's language list, in order; English first means stay
+      for (const l of (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"])) {
+        const code = String(l).toLowerCase().split("-")[0];
+        if (code === "en") break;
+        if (SUPPORTED.includes(code)) { target = code; auto = true; break; }
+      }
+    }
+    if (target && SUPPORTED.includes(target)) {
+      if (auto) { setPref(target); try { sessionStorage.setItem("pg_auto", "1"); } catch {} }
+      location.replace("/" + target + location.pathname + location.search + location.hash);
+      return;  // the browser is navigating; skip the rest of this page's setup
+    }
+  }
+  // on the page we switched to: say so, and offer the way back
+  let switched = false;
+  try { switched = sessionStorage.getItem("pg_auto") === "1"; sessionStorage.removeItem("pg_auto"); } catch {}
+  const showSwitchedNotice = () => {
+    let I = {};
+    try { I = JSON.parse(document.getElementById("i18n").textContent); } catch {}
+    const nameEl = document.querySelector("#lang summary span");
+    if (I.auto_switched) {
+      const t = document.createElement("div");
+      t.className = "toast"; t.setAttribute("role", "status");
+      const msg = document.createElement("span"); msg.textContent = I.auto_switched.replace("{lang}", nameEl ? nameEl.textContent : pageLang);
+      const back = document.createElement("a"); back.href = location.pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/"; back.setAttribute("hreflang", "en"); back.textContent = I.auto_back;
+      back.addEventListener("click", () => setPref("en"));
+      const x = document.createElement("button"); x.type = "button"; x.setAttribute("aria-label", "×"); x.textContent = "×"; x.onclick = () => t.remove();
+      t.append(msg, back, x); document.body.appendChild(t);
+      setTimeout(() => t.remove(), 12000);
+    }
+  };
+  // the language data block comes after this script in the page, so wait for the document to finish parsing
+  if (switched && pageLang !== "en") { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showSwitchedNotice); else showSwitchedNotice(); }
+
   // ---------- sticky nav border + mobile menu ----------
   const topbar = $("#topbar"), links = $("#links"), burger = $("#burger");
   if (topbar) {

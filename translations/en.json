@@ -379,5 +379,7 @@
  "f.qr.t": "Link hidden inside a QR code",
  "f.qr.d": "A QR code hides the address from your eyes. Scammers use QR codes to get past text filters ('quishing').",
  "js.qr_h": "QR code found in the image (its link was checked below)",
- "err.pixels": "That image is too large (max 30 megapixels)."
+ "err.pixels": "That image is too large (max 30 megapixels).",
+ "js.auto_switched": "Showing this page in {lang}.",
+ "js.auto_back": "Back to English"
 }

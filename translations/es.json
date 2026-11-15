@@ -382,5 +382,7 @@
  "f.qr.t": "Enlace oculto en un código QR",
  "f.qr.d": "Un código QR oculta la dirección a tus ojos. Los estafadores usan códigos QR para saltarse los filtros de texto (“quishing”).",
  "js.qr_h": "Código QR encontrado en la imagen (su enlace se comprobó abajo)",
- "err.pixels": "Esa imagen es demasiado grande (máx. 30 megapíxeles)."
+ "err.pixels": "Esa imagen es demasiado grande (máx. 30 megapíxeles).",
+ "js.auto_switched": "Mostrando esta página en {lang}.",
+ "js.auto_back": "Volver al inglés"
 }
